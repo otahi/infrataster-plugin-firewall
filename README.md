@@ -1,4 +1,4 @@
-# Not Realeased Yet
+# Not Released Yet
 
 # Infrataster::Plugin::Firewall
 [![Gem Version](https://badge.fury.io/rb/infrataster-plugin-firewall.svg)](http://badge.fury.io/rb/infrataster-plugin-firewall)
