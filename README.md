@@ -30,13 +30,13 @@ The usage is as same as [Infrataster](https://github.com/ryotarai/infrataster).
 ```ruby
 require 'infrataster-plugin-firewall'
 
-describe server(:source) do
-  it { is_expected.to reach_to(server(:dest)) } #ICMP ping
-  it { is_expected.to reach_to(server(:dest)).dest_port(80) } #TCP:80
-  it { is_expected.to reach_to(server(:dest)).tcp.dest_port(80) }
-  it { is_expected.to reach_to(server(:dest)).udp.dest_port(53) }
-  it { is_expected.to reach_to(server(:dest)).udp.dest_port(53) }
-  it { is_expected.to reach_to(server(:dest)).tcp.dest_port(80).source_port(30123) }
+describe server(:src) do
+  it { is_expected.to reach_to(server(:dst)) } #ICMP ping
+  it { is_expected.to reach_to(server(:dst)).dest_port(80) } #TCP:80
+  it { is_expected.to reach_to(server(:dst)).tcp.dest_port(80) }
+  it { is_expected.to reach_to(server(:dst)).udp.dest_port(53) }
+  it { is_expected.to reach_to(server(:dst)).udp.dest_port(53) }
+  it { is_expected.to reach_to(server(:dst)).tcp.dest_port(80).source_port(30123) }
 end
 ```
 
