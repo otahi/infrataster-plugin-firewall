@@ -14,5 +14,5 @@ Vagrant.configure('2') do |config|
     v.customize ['modifyvm', :id, '--memory', '256']
   end
 
-  config.vm.provision :shell, inline: 'yum install tcpdump -y'
+  config.vm.provision :shell, inline: 'yum install tcpdump nc -y'
 end
