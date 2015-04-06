@@ -1,4 +1,5 @@
 require 'infrataster/rspec'
+require 'infrataster-plugin-firewall'
 
 Infrataster::Server.define(:src) do |server|
   server.address = '192.168.33.10/32'
