@@ -6,7 +6,7 @@ module Infrataster
     # Firewall resouce helper
     module ResourceHelper
       def firewall(*args)
-        Resources::FirewallResource.new(*args)
+        Resources::FirewallResource.new(described_class, *args)
       end
     end
   end

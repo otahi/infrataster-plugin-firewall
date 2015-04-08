@@ -6,9 +6,11 @@ module Infrataster
     class FirewallResource < BaseResource
       Error = Class.new(StandardError)
 
+      attr_reader :src_node
       attr_reader :dest_node
 
-      def initialize(dest_node, options = {})
+      def initialize(src_node, dest_node, options = {})
+        @src_node = src_node
         @dest_node = dest_node
       end
 
