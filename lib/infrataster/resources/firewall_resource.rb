@@ -8,7 +8,7 @@ module Infrataster
 
       attr_reader :dest_node
 
-      def initialize(dest_node, options={})
+      def initialize(dest_node, options = {})
         @dest_node = dest_node
       end
 
