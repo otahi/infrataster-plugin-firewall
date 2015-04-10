@@ -7,12 +7,13 @@ module Infrataster
     class FirewallContext < BaseContext
       extend RSpec::Matchers::DSL
 
-      matcher(:be_reachable) do |expected|
-        match do |actual|
+      matcher(:be_reachable) do
+        match do
+          @options ||= {}
           transfer =
             Plugin::Firewall::Transfer.new(resource.src_node,
                                            resource.dest_node,
-                                           @protocol)
+                                           @options)
           transfer.reachable?
         end
 
