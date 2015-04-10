@@ -10,7 +10,7 @@ def yellow(str)
   "\e[33m#{str}\e[m"
 end
 
-cwd = File.expand_path('spec/integration/vm')
+ENV['VAGRANT_CWD'] = File.expand_path('spec/integration/vm')
 
 desc 'Run unit and integration tests'
 task :spec => ['spec:unit', 'spec:integration']
@@ -37,16 +37,12 @@ namespace :spec do
 
     task :start_vm do
       puts yellow('Starting VM...')
-      Dir.chdir(cwd) do
-        system 'vagrant reload --provision | grep "not created" && vagrant up'
-      end
+      system 'vagrant reload --provision | grep "not created" && vagrant up'
     end
 
     task :destroy_vm do
       puts yellow('Destroying VM...')
-      Dir.chdir(cwd) do
-        system 'vagrant', 'destroy', '-f'
-      end
+      system 'vagrant', 'destroy', '-f'
     end
   end
 end
