@@ -8,36 +8,39 @@ module Infrataster
           @src_node = src_node
           @dest_node = dest_node
           @protocol = options[:protocol] ? options[:protocol] : :ICMP
+          @dest_port = options[:dest_port] ? options[:dest_port] : 80
         end
 
         def reachable?
           case @protocol
-          when :ICMP then
+          when :ICMP
             icmp_reachable?
+          when :TCP, :UDP
+            transport_reachable?
           end
         end
 
         private
 
         def icmp_reachable?
-          addresses(@dest_node).each do |a|
-            @src_node.server.ssh_exec("ping -c1 -W3 #{a}")
-          end
+          dest_addr = Util.address(@dest_node)
+          @src_node.server
+            .ssh_exec("ping -c1 -W3 #{dest_addr} && echo PING_OK")
+            .include?('PING_OK')
         end
 
-        def addresses(node)
-          addrs = nil
-          if node.respond_to?(:server)
-            addrs = case node.server
-                    when respond_to?(:rep_address)
-                      node.server.rep_address
-                    when respond_to?(:server)
-                      node.server.address
-                    end
-          else
-            addrs = node.to_s
+        def transport_reachable?
+          dest_addr = Util.address(@dest_node)
+          bpf = Capture.bpf(:'dst host' => dest_addr,
+                            :'dst port' => @dest_port,
+                            @protocol.downcase => nil)
+          capture = Capture.new(@dest_node, bpf)
+          capture.open do
+            nc_option = @protocol == :UDP ? '-u' : '-t'
+            @src_node.server
+              .ssh_exec("echo test|nc #{dest_addr} #{@dest_port} #{nc_option}")
           end
-          [addrs].flatten
+          capture.result
         end
       end
     end
