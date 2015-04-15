@@ -1,5 +1,3 @@
-# Not Released Yet
-
 # Infrataster::Plugin::Firewall
 [![Gem Version](https://badge.fury.io/rb/infrataster-plugin-firewall.svg)](http://badge.fury.io/rb/infrataster-plugin-firewall)
 [![Build Status](https://travis-ci.org/otahi/infrataster-plugin-firewall.svg)](https://travis-ci.org/otahi/infrataster-plugin-firewall)
