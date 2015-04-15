@@ -13,3 +13,7 @@ Style/PredicateName:
 # allow lib/infrataster-plugin-dns.rb
 Style/FileName:
   Enabled: false
+
+# allow 5 digit not separated
+NumericLiterals:
+  MinDigits: 6
