@@ -46,14 +46,15 @@ You can get following result:
 ```
 $ bundle exec rspec
 
-server 'source'
-  should reach to server 'dest'
-  should reach to server 'dest' port 80
-  should reach to server 'dest' port 80/tcp
-  should reach to server 'dest' port 53/udp
-  should reach to server 'dest' port 80/tcp from port 30123
+server 'src'
+  via firewall
+    should reach to server 'dst'
+    should reach to server 'dst' dest_port: 80
+    should reach to server 'dst' tcp dest_port: 80
+    should reach to server 'dst' udp dest_port: 53
+    should reach to server 'dst' tcp dest_port: 80 source_port: 30123
 
-Finished in 10.03599 seconds (files took 0.93903 seconds to load)
+Finished in 15.87 seconds (files took 0.58711 seconds to load)
 5 examples, 0 failures
 $
 ```
