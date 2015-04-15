@@ -10,6 +10,7 @@ module Infrataster
           @node = node.respond_to?(:server) ? node.server :
             Net::SSH.start(node, config: true)
           @bpf = bpf ? bpf : ''
+          @connected = false
           @term_sec = term_sec ? term_sec : 5
           @thread = nil
           @ssh = nil

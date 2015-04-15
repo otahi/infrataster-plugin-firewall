@@ -44,6 +44,14 @@ module Infrataster
           @chain_string += " dest_port: #{port}"
         end
 
+        chain :source_port do |port|
+          @options ||= {}
+          @options.merge!(source_port: port)
+          @options.merge!(protocol: :TCP) unless @options[:protocol]
+          @chain_string ||= ''
+          @chain_string += " source_port: #{port}"
+        end
+
         failure_message do
           s = "expected to reach to #{resource.dest_node}"
           s + "#{@chain_string}, but did not."
