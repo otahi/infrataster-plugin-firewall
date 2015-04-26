@@ -61,6 +61,9 @@ Finished in 21.35 seconds (files took 0.7851 seconds to load)
 $
 ```
 
+## Release Notes
+
+[Release Notes](./RELEASE_NOTES.md)
 
 ## Contributing
 
