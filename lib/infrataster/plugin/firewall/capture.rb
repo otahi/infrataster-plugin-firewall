@@ -6,12 +6,12 @@ module Infrataster
       class Capture
         attr_reader :result, :output
 
-        def initialize(node, bpf = nil, term_sec = nil)
+        def initialize(node, bpf = nil, term_sec = 3)
           @node = node.respond_to?(:server) ? node.server :
             Net::SSH.start(node, config: true)
-          @bpf = bpf ? bpf : ''
+          @bpf = bpf
           @connected = false
-          @term_sec = term_sec ? term_sec : 5
+          @term_sec = term_sec
           @thread = nil
           @ssh = nil
           @result = false
