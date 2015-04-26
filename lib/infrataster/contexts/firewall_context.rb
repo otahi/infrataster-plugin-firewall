@@ -19,19 +19,19 @@ module Infrataster
 
         chain :icmp do
           @options ||= {}
-          @options.merge!(protocol: :ICMP) unless @options[:protocol]
+          @options.merge!(protocol: :icmp) unless @options[:protocol]
         end
 
         chain :tcp do
           @options ||= {}
-          @options.merge!(protocol: :TCP) unless @options[:protocol]
+          @options.merge!(protocol: :tcp) unless @options[:protocol]
           @chain_string ||= ''
           @chain_string += ' tcp'
         end
 
         chain :udp do
           @options ||= {}
-          @options.merge!(protocol: :UDP) unless @options[:protocol]
+          @options.merge!(protocol: :udp) unless @options[:protocol]
           @chain_string ||= ''
           @chain_string += ' udp'
         end
@@ -39,7 +39,7 @@ module Infrataster
         chain :dest_port do |port|
           @options ||= {}
           @options.merge!(dest_port: port)
-          @options.merge!(protocol: :TCP) unless @options[:protocol]
+          @options.merge!(protocol: :tcp) unless @options[:protocol]
           @chain_string ||= ''
           @chain_string += " dest_port: #{port}"
         end
@@ -47,7 +47,7 @@ module Infrataster
         chain :source_port do |port|
           @options ||= {}
           @options.merge!(source_port: port)
-          @options.merge!(protocol: :TCP) unless @options[:protocol]
+          @options.merge!(protocol: :tcp) unless @options[:protocol]
           @chain_string ||= ''
           @chain_string += " source_port: #{port}"
         end

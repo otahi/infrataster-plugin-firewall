@@ -7,16 +7,16 @@ module Infrataster
         def initialize(src_node, dest_node, options = {})
           @src_node = src_node
           @dest_node = dest_node
-          @protocol = options[:protocol] ? options[:protocol] : :ICMP
+          @protocol = options[:protocol] ? options[:protocol] : :icmp
           @dest_port = options[:dest_port] ? options[:dest_port] : 80
           @source_port = options[:source_port] ? options[:source_port] : nil
         end
 
         def reachable?
           case @protocol
-          when :ICMP
+          when :icmp
             icmp_reachable?
-          when :TCP, :UDP
+          when :tcp, :udp
             transport_reachable?
           end
         end
@@ -39,7 +39,7 @@ module Infrataster
           bpf = Capture.bpf(bpf_options)
           capture = Capture.new(@dest_node, bpf)
           capture.open do
-            nc_option = @protocol == :UDP ? '-u' : '-t'
+            nc_option = @protocol == :udp ? '-u' : '-t'
             nc_option += @source_port ? " -p #{@source_port}" : ''
             @src_node.server
               .ssh_exec("echo test|nc #{dest_addr} #{@dest_port} #{nc_option}")
