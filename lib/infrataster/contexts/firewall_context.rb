@@ -37,16 +37,20 @@ module Infrataster
         end
 
         chain :dest_port do |port|
+          port_number, protocol = port.to_s.split('/')
           @options ||= {}
-          @options.merge!(dest_port: port)
+          @options.merge!(dest_port: port_number)
+          @options.merge!(protocol: protocol.to_sym) if protocol
           @options.merge!(protocol: :tcp) unless @options[:protocol]
           @chain_string ||= ''
           @chain_string += " dest_port: #{port}"
         end
 
         chain :source_port do |port|
+          port_number, protocol = port.to_s.split('/')
           @options ||= {}
-          @options.merge!(source_port: port)
+          @options.merge!(source_port: port_number)
+          @options.merge!(protocol: protocol.to_sym) if protocol
           @options.merge!(protocol: :tcp) unless @options[:protocol]
           @chain_string ||= ''
           @chain_string += " source_port: #{port}"
