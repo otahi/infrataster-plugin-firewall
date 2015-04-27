@@ -5,21 +5,12 @@
 
 Firewall plugin for Infrataster.
 
-## Installation
+## Why Infrataster::Plugin::Firewall
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'infrataster-plugin-firewall'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install infrataster-plugin-firewall
+We want to test connectivity between a source server and a destination server.
+But the servers could not respond because of no service provided on the port which we want to test.
+So, this plugin tests tcp/udp with tcpdump which can get packets on destination servers.
+Tcpdump can capture packets even if iptables or firewalld drops the packets.
 
 ## Usage
 
@@ -60,6 +51,28 @@ Finished in 21.35 seconds (files took 0.7851 seconds to load)
 7 examples, 0 failures
 $
 ```
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'infrataster-plugin-firewall'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install infrataster-plugin-firewall
+
+## Requirement
+
+This plugin uses nc(netcat) and tcpdump.
+You need to run tcpdump on destination servers with sudo, 
+and nc on source servers.
 
 ## Release Notes
 
