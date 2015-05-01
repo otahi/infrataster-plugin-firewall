@@ -31,8 +31,10 @@ module Infrataster
         end
 
         def transport_reachable?
+          src_addr  = Util.address(@src_node)
           dest_addr = Util.address(@dest_node)
-          bpf_options = { :'dst host' => dest_addr,
+          bpf_options = { :'src host' => src_addr,
+                          :'dst host' => dest_addr,
                           :'dst port' => @dest_port,
                           @protocol.downcase => nil }
           bpf_options.merge!(:'src port' => @source_port) if @source_port
