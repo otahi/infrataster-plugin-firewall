@@ -39,7 +39,7 @@ module Infrataster
           bpf = Capture.bpf(bpf_options)
           capture = Capture.new(@dest_node, bpf)
           capture.open do
-            nc_option = @protocol == :udp ? '-u' : '-t'
+            nc_option = @protocol == :udp ? '-w1 -u' : '-w1 -t'
             nc_option += @source_port ? " -p #{@source_port}" : ''
             @src_node.server
               .ssh_exec("echo test|nc #{dest_addr} #{@dest_port} #{nc_option}")
