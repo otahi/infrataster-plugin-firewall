@@ -5,7 +5,7 @@ module Infrataster
       # Util
       class Util
         def self.address(node)
-          if node.respond_to?(:server)
+          if node.class == Resources::ServerResource
             node.server.address
           else
             node.to_s
