@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.1.3
+
+* Fix to netcat send tiny string on udp #1
+
 ## v0.1.2
 
 * Fit not wait forever even if udp
