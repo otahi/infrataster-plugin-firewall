@@ -44,7 +44,8 @@ module Infrataster
             nc_option = @protocol == :udp ? '-w1 -u' : '-w1 -t'
             nc_option += @source_port ? " -p #{@source_port}" : ''
             @src_node.server
-              .ssh_exec("echo test|nc #{dest_addr} #{@dest_port} #{nc_option}")
+              .ssh_exec('echo test_with_infrataster | ' \
+                        + "nc #{dest_addr} #{@dest_port} #{nc_option}")
           end
           capture.result
         end
