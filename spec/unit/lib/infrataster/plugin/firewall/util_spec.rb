@@ -7,7 +7,7 @@ module Infrataster
       describe Util do
         describe 'address' do
           before(:all) { Infrataster::Server.define(:src, '192.168.33.10') }
-          after(:all)  { Infrataster::Server.clear_all }
+          after(:all)  { Infrataster::Server.clear_defined_servers }
 
           context 'if node.server is given' do
             let(:node) { server(:src) }
