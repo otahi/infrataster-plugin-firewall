@@ -31,6 +31,10 @@ namespace :spec do
     task :clean => ['destroy_vm'] do
     end
 
+    desc 'Stop'
+    task :stop => ['stop_vm'] do
+    end
+
     desc 'Prepare'
     task :prepare => ['start_vm'] do
     end
@@ -38,6 +42,11 @@ namespace :spec do
     task :start_vm do
       puts yellow('Starting VM...')
       system 'vagrant reload --provision | grep "not created" && vagrant up'
+    end
+
+    task :stop_vm do
+      puts yellow('Stopping VM...')
+      system 'vagrant halt'
     end
 
     task :destroy_vm do
