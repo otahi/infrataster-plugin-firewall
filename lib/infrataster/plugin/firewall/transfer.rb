@@ -10,6 +10,7 @@ module Infrataster
           @protocol = options[:protocol] ? options[:protocol] : :icmp
           @dest_port = options[:dest_port] ? options[:dest_port] : 80
           @source_port = options[:source_port] ? options[:source_port] : nil
+          @ack = options[:ack] ? options[:ack] : nil
         end
 
         def reachable?
@@ -33,21 +34,34 @@ module Infrataster
         def transport_reachable?
           src_addr  = Util.address(@src_node)
           dest_addr = Util.address(@dest_node)
-          bpf_options = { :'src host' => src_addr,
-                          :'dst host' => dest_addr,
-                          :'dst port' => @dest_port,
-                          @protocol.downcase => nil }
-          bpf_options.merge!(:'src port' => @source_port) if @source_port
-          bpf = Capture.bpf(bpf_options)
-          capture = Capture.new(@dest_node, bpf)
-          capture.open do
-            nc_option = @protocol == :udp ? '-w1 -u' : '-w1 -t'
-            nc_option += @source_port ? " -p #{@source_port}" : ''
-            @src_node.server
+          nc_option = @protocol == :udp ? '-w1 -u' : '-w1 -t'
+          nc_option += @source_port ? " -p #{@source_port}" : ''
+
+          nc_result = nil
+          if @ack == :only
+            nc_result = @src_node.server
               .ssh_exec('echo test_with_infrataster | ' \
                         + "nc #{dest_addr} #{@dest_port} #{nc_option}")
+            return nc_result
+          else
+            bpf_options = { :'src host' => src_addr,
+                            :'dst host' => dest_addr,
+                            :'dst port' => @dest_port,
+                            @protocol.downcase => nil }
+            bpf_options.merge!(:'src port' => @source_port) if @source_port
+            bpf = Capture.bpf(bpf_options)
+            capture = Capture.new(@dest_node, bpf)
+            capture.open do
+              nc_result = @src_node.server
+                .ssh_exec('echo test_with_infrataster | ' \
+                          + "nc #{dest_addr} #{@dest_port} #{nc_option} && echo NC_OK")
+            end
+            if @protocol == :tcp && @ack == :both
+              capture.result && nc_result.to_s.include?('NC_OK')
+            else
+              capture.result
+            end
           end
-          capture.result
         end
       end
     end
