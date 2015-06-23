@@ -32,36 +32,61 @@ module Infrataster
         end
 
         def transport_reachable?
-          src_addr  = Util.address(@src_node)
-          dest_addr = Util.address(@dest_node)
-          nc_option = @protocol == :udp ? '-w1 -u' : '-w1 -t'
-          nc_option += @source_port ? " -p #{@source_port}" : ''
-
-          nc_result = nil
-          if @ack == :only
-            nc_result = @src_node.server
-              .ssh_exec('echo test_with_infrataster | ' \
-                        + "nc #{dest_addr} #{@dest_port} #{nc_option}")
-            return nc_result
+          if @protocol == :tcp && @ack == :only
+            jugde_with_only_ack
           else
-            bpf_options = { :'src host' => src_addr,
-                            :'dst host' => dest_addr,
-                            :'dst port' => @dest_port,
-                            @protocol.downcase => nil }
-            bpf_options.merge!(:'src port' => @source_port) if @source_port
-            bpf = Capture.bpf(bpf_options)
-            capture = Capture.new(@dest_node, bpf)
-            capture.open do
-              nc_result = @src_node.server
-                .ssh_exec('echo test_with_infrataster | ' \
-                          + "nc #{dest_addr} #{@dest_port} #{nc_option} && echo NC_OK")
-            end
-            if @protocol == :tcp && @ack == :both
-              capture.result && nc_result.to_s.include?('NC_OK')
-            else
-              capture.result
-            end
+            jugde_with_capture
           end
+        end
+
+        def jugde_with_only_ack
+          dest_addr = Util.address(@dest_node)
+
+          nc_result =
+            @src_node.server
+            .ssh_exec('echo test_with_infrataster | ' \
+                      + "nc #{dest_addr} #{@dest_port} #{nc_options}" \
+                      '&& echo NC_OK')
+          nc_result.to_s.include?('NC_OK')
+        end
+
+        def jugde_with_capture
+          src_addr = Util.address(@src_node)
+          dest_addr = Util.address(@dest_node)
+
+          bpf = Capture.bpf(bpf_options(src_addr, dest_addr))
+          capture = Capture.new(@dest_node, bpf)
+          nc_result = nil
+          capture.open do
+            nc_result =
+              @src_node.server
+              .ssh_exec('echo test_with_infrataster | ' \
+                        + "nc #{dest_addr} #{@dest_port} #{nc_options}" \
+                        '&& echo NC_OK')
+          end
+          capture_succedded?(capture.result, nc_result)
+        end
+
+        def capture_succedded?(capture_result, nc_result)
+          if @protocol == :tcp && @ack == :both
+            capture_result && nc_result.to_s.include?('NC_OK')
+          else
+            capture_result
+          end
+        end
+
+        def nc_options
+          nc_option = @protocol == :udp ? '-w1 -u' : '-w1 -t'
+          nc_option + (@source_port ? " -p #{@source_port}" : '')
+        end
+
+        def bpf_options(src_addr, dest_addr)
+          options = { :'src host' => src_addr,
+                      :'dst host' => dest_addr,
+                      :'dst port' => @dest_port,
+                      @protocol.downcase => nil }
+          options.merge!(:'src port' => @source_port) if @source_port
+          options
         end
       end
     end
