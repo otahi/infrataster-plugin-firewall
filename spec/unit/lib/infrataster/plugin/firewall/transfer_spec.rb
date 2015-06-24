@@ -9,7 +9,7 @@ module Infrataster
           Infrataster::Server.define(:src, '192.168.33.10')
           Infrataster::Server.define(:dst, '192.168.33.11')
         end
-        after(:all)  { Infrataster::Server.clear_all }
+        after(:all)  { Infrataster::Server.clear_defined_servers }
         describe '#reachable?' do
           context 'if @protocol == :icmp' do
             let(:transfer) do
