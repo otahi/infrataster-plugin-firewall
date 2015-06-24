@@ -25,6 +25,9 @@ module Infrataster
       it 'should have chain `source_port`' do
         expect(context.be_reachable).to respond_to(:source_port)
       end
+      it 'should have chain `ack`' do
+        expect(context.be_reachable).to respond_to(:ack)
+      end
       it 'should have failure_message' do
         expect(context.be_reachable)
           .to respond_to(:failure_message)

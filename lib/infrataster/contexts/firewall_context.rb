@@ -56,6 +56,11 @@ module Infrataster
           @chain_string += " source_port: #{port}"
         end
 
+        chain :ack do |mode = :both|
+          @options ||= {}
+          @options.merge!(ack: mode)
+        end
+
         failure_message do
           s = "expected to reach to #{resource.dest_node}"
           s + "#{@chain_string}, but did not."

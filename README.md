@@ -24,6 +24,8 @@ describe server(:src) do
     it { is_expected.to be_reachable } #ICMP ping
     it { is_expected.to be_reachable.dest_port(80) } #TCP:80
     it { is_expected.to be_reachable.tcp.dest_port(80) }
+    it { is_expected.to be_reachable.tcp.dest_port(22).ack } # judge with both ACK and captured SYN
+    it { is_expected.to be_reachable.tcp.dest_port(22).ack(:only) } # judge with only ACK
     it { is_expected.to be_reachable.udp.dest_port(53) }
     it { is_expected.to be_reachable.dest_port('80/tcp') }
     it { is_expected.to be_reachable.dest_port('53/udp') }
@@ -42,13 +44,15 @@ server 'src'
     should reach to server 'dst'
     should reach to server 'dst' dest_port: 80
     should reach to server 'dst' tcp dest_port: 80
+    should reach to server 'dst' tcp dest_port: 22
+    should reach to server 'dst' tcp dest_port: 22
     should reach to server 'dst' udp dest_port: 53
     should reach to server 'dst' dest_port: 80/tcp
     should reach to server 'dst' dest_port: 53/udp
     should reach to server 'dst' tcp dest_port: 80 source_port: 30123
 
 Finished in 21.35 seconds (files took 0.7851 seconds to load)
-7 examples, 0 failures
+9 examples, 0 failures
 $
 ```
 
