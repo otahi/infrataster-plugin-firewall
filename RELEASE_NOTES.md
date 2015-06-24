@@ -1,5 +1,10 @@
 # Release Notes
 
+## v0.1.4
+
+* Add feature to judge with ACK #2
+* Change dependency infrataster version 0.2.0 -> 0.3.0 
+
 ## v0.1.3
 
 * Fix to netcat send tiny string on udp #1
