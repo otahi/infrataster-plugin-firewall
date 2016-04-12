@@ -27,12 +27,10 @@ module Infrataster
         def icmp_reachable?
           dest_addr = Util.address(@dest_node)
           uname = @src_node.server.ssh_exec('uname -s')
-          ping_options = '-c1 -W3'
-          case uname
-          when /OpenBSD/
-            ping_options = '-c 1 -w 3'
-          when /FreeBSD/
-            ping_options = '-c 1 -W 3000' # milliseconds
+          ping_options = '-c 1 -w 3'
+          case uname.chomp
+          when 'FreeBSD'
+            ping_options = '-c 1 -t 3'
           end
           @src_node.server
             .ssh_exec("ping #{ping_options} #{dest_addr} && echo PING_OK")
