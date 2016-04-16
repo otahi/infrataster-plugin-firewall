@@ -17,6 +17,13 @@ module Infrataster
           transfer.reachable?
         end
 
+        chain :via do |interface|
+          @options ||={}
+          @options.merge!(interface: interface)
+          @chain_string ||= ''
+          @chain_string += ' via'
+        end
+
         chain :icmp do
           @options ||= {}
           @options.merge!(protocol: :icmp) unless @options[:protocol]
