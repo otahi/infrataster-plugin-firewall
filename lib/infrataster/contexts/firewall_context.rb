@@ -21,7 +21,7 @@ module Infrataster
           @options ||={}
           @options.merge!(interface: interface)
           @chain_string ||= ''
-          @chain_string += ' via'
+          @chain_string += " via interface: #{interface}"
         end
 
         chain :icmp do
