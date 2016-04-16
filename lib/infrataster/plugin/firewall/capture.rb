@@ -6,10 +6,11 @@ module Infrataster
       class Capture
         attr_reader :result, :output
 
-        def initialize(node, bpf = nil, term_sec = 3)
+        def initialize(node, bpf = nil, interface = 'any', term_sec = 3)
           @node = node.respond_to?(:server) ? node.server :
             Net::SSH.start(node, config: true)
           @bpf = bpf
+          @interface = interface
           @connected = false
           @term_sec = term_sec
           @thread = nil
@@ -94,7 +95,7 @@ module Infrataster
         end
 
         def capture_command
-          "sudo tcpdump -c1 -nnn -i any #{@bpf} > /dev/null && echo RECEIVED"
+          "sudo tcpdump -c1 -nnn -i #{@interface} #{@bpf} > /dev/null && echo RECEIVED"
         end
       end
     end

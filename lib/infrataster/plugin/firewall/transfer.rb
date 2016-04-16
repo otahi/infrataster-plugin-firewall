@@ -11,6 +11,7 @@ module Infrataster
           @dest_port = options[:dest_port] ? options[:dest_port] : 80
           @source_port = options[:source_port] ? options[:source_port] : nil
           @ack = options[:ack] ? options[:ack] : nil
+          @interface = options[:interface] ? options[:interface] : nil
         end
 
         def reachable?
@@ -55,7 +56,7 @@ module Infrataster
           dest_addr = Util.address(@dest_node)
 
           bpf = Capture.bpf(bpf_options(src_addr, dest_addr))
-          capture = Capture.new(@dest_node, bpf)
+          capture = Capture.new(@dest_node, bpf, @interface)
           nc_result = nil
           capture.open do
             nc_result =
