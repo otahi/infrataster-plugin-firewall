@@ -18,7 +18,7 @@ module Infrataster
         end
 
         chain :via do |interface|
-          @options ||={}
+          @options ||= {}
           @options.merge!(interface: interface)
           @chain_string ||= ''
           @chain_string += " via interface: #{interface}"
