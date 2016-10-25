@@ -55,6 +55,7 @@ module Infrataster
                 output = run_check(channel)
                 @output << output.to_s
               end
+              ssh.loop
             end
           end
         end
