@@ -1,5 +1,10 @@
 # Release Notes
 
+## v0.1.5
+
+* Fix lack of ssh.loop #7
+* Support FreeBSD and OpenBSD #3
+
 ## v0.1.4
 
 * Add feature to judge with ACK #2
